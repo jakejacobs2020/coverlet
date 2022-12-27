@@ -108,86 +108,14 @@ _Note: The `--no-build` flag is specified so that the `/path/to/test-assembly.dl
 
 See [documentation](Documentation/GlobalTool.md) for advanced usage.
 
-#### Requirements
-.NET global tools rely on a .NET Core runtime installed on your machine https://docs.microsoft.com/en-us/dotnet/core/tools/global-tools#what-could-go-wrong
+Visual Studio on Windows provides a way to perform code coverage.
 
-.NET Coverlet global tool requires _.NET Core 2.2 and above_ 
+The unit test project requires the coverlet.msbuild NuGet package.
 
+Code coverage results are written to an XML file so that they can be processed by another tool. Azure Pipelines supports Cobertura and JaCoCo coverage result formats.
 
-## How It Works
+To convert Cobertura coverage results to a format that's human-readable, they can use a tool called ReportGenerator.
 
-Coverlet generates code coverage information by going through the following process:
+ReportGenerator provides many formats, including HTML. The HTML formats create detailed reports for each class in a .NET project.
 
-### Before Tests Run
-
-* Locates the unit test assembly and selects all the referenced assemblies that have PDBs.
-* Instruments the selected assemblies by inserting code to record sequence point hits to a temporary file.
-
-### After Tests Run
-
-* Restore the original non-instrumented assembly files.
-* Read the recorded hits information from the temporary file.
-* Generate the coverage result from the hits information and write it to a file.
-
-## Deterministic build support
-
-Coverlet supports coverage for deterministic builds. The solution at the moment is not optimal and need a workaround.  
-Take a look at [documentation](Documentation/DeterministicBuild.md).
-
-## Are you in trouble with some feature? Check on [examples](Documentation/Examples.md)!
-
-## Known Issues
-
-Unfortunately we have some known issues, check it [here](Documentation/KnownIssues.md) 
-
-## Cake Add-In
-
-If you're using [Cake Build](https://cakebuild.net) for your build script you can use the [Cake.Coverlet](https://github.com/Romanx/Cake.Coverlet) add-in to provide you extensions to dotnet test for passing Coverlet arguments in a strongly typed manner.
-
-## Visual Studio Add-In
-
-If you want to visualize coverlet output inside Visual Studio while you code, you can use the following addins depending on your platform.
-
-### Windows
-If you're using Visual Studio on Windows, you can use the [Fine Code Coverage](https://marketplace.visualstudio.com/items?itemName=FortuneNgwenya.FineCodeCoverage) extension.
-Visualization is updated when you run unit tests inside Visual Studio.
-
-### Mac OS
-If you're using Visual Studio for Mac, you can use the [VSMac-CodeCoverage](https://github.com/ademanuele/VSMac-CodeCoverage) extension.
-
-## Consume nightly build
-
-We offer nightly build of master for all packages.
-See the [documentation](Documentation/ConsumeNightlyBuild.md)
-
-## Issues & Contributions
-
-If you find a bug or have a feature request, please report them at this repository's issues section. See the [CONTRIBUTING GUIDE](CONTRIBUTING.md) for details on building and contributing to this project.
-
-## Coverlet Team
-
-Author and owner    
-* [Toni Solarin-Sodara](https://github.com/tonerdo)  
-
-Co-maintainers
-
-* [Peter Liljenberg](https://github.com/petli)  
-* [David Müller](https://github.com/daveMueller)
-* [Marco Rossignoli](https://github.com/MarcoRossignoli)
-
-## Code of Conduct
-
-This project has adopted the code of conduct defined by the Contributor Covenant
-to clarify expected behavior in our community.
-
-For more information, see the [.NET Foundation Code of Conduct](https://dotnetfoundation.org/code-of-conduct).
-
-## Credits
-
-Part of the code is based on work done by OpenCover team https://github.com/OpenCover
-
-## License
-
-This project is licensed under the MIT license. See the [LICENSE](LICENSE) file for more info.  
-  
-## Supported by the [.NET Foundation](https://dotnetfoundation.org/)
+Specifically, there's an HTML format called HtmlInline_AzurePipelines, which provides a visual appearance that matches Azure Pipelines.
