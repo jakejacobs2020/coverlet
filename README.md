@@ -108,7 +108,8 @@ ReportGenerator provides many formats, including HTML. The HTML formats create d
 
 Specifically, there's an HTML format called HtmlInline_AzurePipelines, which provides a visual appearance that matches Azure Pipelines.
 
-```dotnet new tool-manifest
+```
+dotnet new tool-manifest
 dotnet tool install dotnet-reportgenerator-globaltool
 dotnet add Tailspin.SpaceGame.Web.Tests package coverlet.msbuild
 
@@ -121,4 +122,5 @@ dotnet test --no-build \
 dotnet tool run reportgenerator \
   -reports:./Tailspin.SpaceGame.Web.Tests/TestResults/Coverage/coverage.cobertura.xml \
   -targetdir:./CodeCoverage \
-  -reporttypes:HtmlInline_AzurePipelines```
+  -reporttypes:HtmlInline_AzurePipelines
+  ```
