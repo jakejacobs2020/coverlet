@@ -96,18 +96,6 @@ dotnet tool install --global coverlet.console
 
 ### Usage
 
-The `coverlet` tool is invoked by specifying the path to the assembly that contains the unit tests. You also need to specify the test runner and the arguments to pass to the test runner using the `--target` and `--targetargs` options respectively. The invocation of the test runner with the supplied arguments **must not** involve a recompilation of the unit test assembly or no coverage result will be generated.
-
-The following example shows how to use the familiar `dotnet test` toolchain:
-
-```bash
-coverlet /path/to/test-assembly.dll --target "dotnet" --targetargs "test /path/to/test-project --no-build"
-```
-
-_Note: The `--no-build` flag is specified so that the `/path/to/test-assembly.dll` assembly isn't rebuilt_
-
-See [documentation](Documentation/GlobalTool.md) for advanced usage.
-
 Visual Studio on Windows provides a way to perform code coverage.
 
 The unit test project requires the coverlet.msbuild NuGet package.
@@ -119,3 +107,18 @@ To convert Cobertura coverage results to a format that's human-readable, they ca
 ReportGenerator provides many formats, including HTML. The HTML formats create detailed reports for each class in a .NET project.
 
 Specifically, there's an HTML format called HtmlInline_AzurePipelines, which provides a visual appearance that matches Azure Pipelines.
+
+```dotnet new tool-manifest
+dotnet tool install dotnet-reportgenerator-globaltool
+dotnet add Tailspin.SpaceGame.Web.Tests package coverlet.msbuild
+
+dotnet test --no-build \
+  --configuration Release \
+  /p:CollectCoverage=true \
+  /p:CoverletOutputFormat=cobertura \
+  /p:CoverletOutput=./TestResults/Coverage/
+  
+dotnet tool run reportgenerator \
+  -reports:./Tailspin.SpaceGame.Web.Tests/TestResults/Coverage/coverage.cobertura.xml \
+  -targetdir:./CodeCoverage \
+  -reporttypes:HtmlInline_AzurePipelines```
